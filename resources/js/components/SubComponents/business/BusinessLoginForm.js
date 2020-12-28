@@ -96,6 +96,7 @@ function BusinessLoginForm(){
     const [loading,setLoading]=React.useState(true);
     const [loginbuttondisabled,setLoginbuttondisabled]=React.useState(true);
     const [phonevalue,setPhonevalue]=React.useState('');
+    const [verifyvalue,setVerifyvalue]=React.useState('');
     const [showerror,setShowerror]=React.useState(false);
     const [errormessage,setErrormesasage]=React.useState('');
 
@@ -190,6 +191,47 @@ function  reciveSmsCode  () {
 
 
 
+    function checkVerifyCode(){
+
+        if ((verifyvalue !== ''))
+        {
+            axios.post('/api/business/checkverify',{'phone':phonevalue,'verifyCode':verifyvalue,'businessCategoryId':bussinesstype}).then(
+                res=>{
+
+                    if((res.data['Status Code']===200)&&(res.data['Success']===1)) {
+
+                        setErrormesasage(
+                            {
+                                msg: res.data['message'],
+                                key: Math.random(),
+                                errortype: 'success'
+                            });
+                        setShowerror(true);
+
+                    }else{
+                        setErrormesasage(
+                            {
+                                msg: res.data['message'],
+                                key: Math.random(),
+                                errortype: 'warning'
+                            });
+                        setShowerror(true);
+                    }
+
+                });
+        }else{
+            setErrormesasage(
+                {
+                    msg:'کد اعتبار سنجی خالی میباشد',
+                    key:Math.random(),
+                    errortype:'warning'
+                }
+            );
+        }
+    }
+
+
+
 
     return(
         <Container  style={styleBgForm}>
@@ -212,6 +254,8 @@ function  reciveSmsCode  () {
                 <TextField
                     id="businessVerifyCode"
                     label="کد اعتبار سنجی"
+                    onChange={event=>setVerifyvalue(event.target.value)}
+                    value={verifyvalue}
                 />
 
                 <InputLabel id="businessKind" style={selectStyleLabel}>کسب و کار</InputLabel>
@@ -243,7 +287,7 @@ function  reciveSmsCode  () {
                 </div>
 
                 <div style={spaceBetwenButton}>
-                    <Button variant="outlined" color="primary" style={styleButton} disabled={loginbuttondisabled}>
+                    <Button variant="outlined" color="primary" onClick={checkVerifyCode} style={styleButton} disabled={loginbuttondisabled}>
                         وررود به سامانه<LockOpenIcon/>
 
                     </Button>

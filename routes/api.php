@@ -37,6 +37,7 @@ function() {
 
 });
 
+Route::post('/business/checkverify',[RegisterBusinessController::class,'checkVerify'])->middleware('checkverify');
 
 
 

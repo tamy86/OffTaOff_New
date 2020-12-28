@@ -24,7 +24,7 @@ class CheckPhoneAndBusinessType extends Middleware
 
            return response()->json([
                'message'=>' ! شماره همراه وارد شده صحیح نمی باشد',
-               'success'=>0,
+               'Success'=>0,
                'Status Code'=>http_response_code()
            ]);
         }else
@@ -32,7 +32,7 @@ class CheckPhoneAndBusinessType extends Middleware
 
             return response()->json([
                 'message'=>'لطفا نوع کسب و کار را مشخص نمایید',
-                'success'=>0,
+                'Success'=>0,
                 'Status Code'=>http_response_code()
             ]);
         }else{

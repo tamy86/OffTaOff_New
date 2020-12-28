@@ -95,4 +95,36 @@ class RegisterBusinessController extends Controller
             }
 
     }
+
+
+    public function checkVerify(Request $request)
+    {
+        $verifyCode=$request->input('verifyCode');
+        $phoneNo=$request->input('phone');
+        $businessCtegoryId=$request->input('businessCategoryId');
+
+
+       $phoneAndVerifyExist = Businessuser::where('phone',$phoneNo)->where('verify',$verifyCode)->where('bussinesscategoryId',$businessCtegoryId)->exists();
+
+        if ($phoneAndVerifyExist) {
+
+            return response()->json([
+                'Success' => 1,
+                'message' => 'کد اعتبار سنجی به درستی وارد شده است',
+                'Status Code' =>http_response_code(),
+            ]);
+        }else{
+            return response()->json([
+                'Success' => 0,
+                'message' => 'کد اعتبار ، شماره همراه اشتباه وارد شده است یا نوع کسب و کار را تغییر داده اید',
+                'Status Code' =>http_response_code(),
+            ]);
+
+
+        }
+
+
+    }
+
+
 }
